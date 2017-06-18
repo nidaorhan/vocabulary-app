@@ -4,7 +4,7 @@ import PropTypes                  from 'prop-types'
 export default class ShowCards extends Component {
   
   static propTypes = {
-    name: PropTypes.string
+    cards: PropTypes.array.isRequired
   }
 	
 	state = {
@@ -12,55 +12,79 @@ export default class ShowCards extends Component {
 		showDesc : false
 	}
 
-	increaseCardIndex = () => {
-		let { cards } = this.props
-		let cardIndex = this.state.cardIndex
-		if (cards.length>cardIndex) {
-			this.setState({
-				cardIndex: cardIndex+1
-			})
+	onShowNextCardClicked = event => {
+		let { cardIndex } = this.state
+		this.setState({
+			cardIndex : cardIndex + 1,
+			showDesc  : false
+		})
+	}
+
+	getCurrentCard(){
+		
+		let title = '' 
+		let desc 	= ''
+
+		let { cards } 		= this.props
+		let { cardIndex } = this.state
+
+		if( cards.length && cardIndex + 1 <= cards.length ){
+			title = cards[ cardIndex ][ 'title' ]
+			desc 	= cards[ cardIndex ][ 'desc' ]
 		}
+
+		return { title, desc }
+	}
+
+	onToggleDescVisibilityClicked = event => {
+		let { showDesc } = this.state
+		this.setState({ showDesc: !showDesc })
 	}
 
   render() {
+
+  	let { cards } = this.props
+
+		let { showDesc, cardIndex } = this.state
 		
-		let { cards } = this.props
-		let cardIndex = this.state.cardIndex
-		
-		console.log('cardIndex: ' + cardIndex )
+		let { title, desc } = this.getCurrentCard()
+
     return (
 		
       <div>
+				
 				<h1>SHOW CARDS</h1>
-				<p>Title: </p>
+
+				<p>
+					Title: 
+				</p>
 				<p style={{color:'grey',fontSize:'15px'}}> 
-					{ cards[cardIndex] && cards[cardIndex].title } 
+					{ title } 
 				</p>
 
-				<p>Description: </p>
-				<p style={{color:'grey',fontSize:'15px'}}>
-					{ this.state.showDesc && cards[cardIndex] && cards[cardIndex].desc}
+				<p>
+					Description: 
 				</p>
+				{
+					showDesc &&
+					<p style={{color:'grey',fontSize:'15px'}}>
+						{ desc }
+					</p>
+				}
+					
 
 				<button
-					onClick={
-						event => {
-							this.increaseCardIndex()
-						}
-					}
+					disabled={ !cards.length || cardIndex + 1 === cards.length }
+					onClick={ this.onShowNextCardClicked }
 				>
 					Next
 				</button>
+
 				<button
-					onClick={
-						event => {
-							this.setState({
-								showDesc: !this.state.showDesc,
-							})
-						}
-					}
+					disabled={ !cards.length }
+					onClick={ this.onToggleDescVisibilityClicked }
 				>
-				{ this.state.showDesc ? 'Hide Description' : 'Show Description' }
+					{ showDesc ? 'Hide Description' : 'Show Description' }
 				</button>
 
       </div>

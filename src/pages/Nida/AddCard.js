@@ -12,6 +12,10 @@ export default class AddCard extends Component {
 		desc: ''
 	}
 
+	onFormSubmitted = event => {
+		event.preventDefault() // not to reload the page
+	}
+
   render() {
 		
 		let { onAddCard } = this.props
@@ -20,47 +24,60 @@ export default class AddCard extends Component {
     return (
 
       <div>
+				
 				<h1>ADD NEW CARD</h1>
-				<p>Title: </p>
-				<input 
-					type="text"
-					value={ title }
-					onChange={
-						event => {
-							this.setState({
-								title: event.target.value
-							})
+				
+				<form onSubmit={ this.onFormSubmitted } >
+
+					<p>Title: </p>
+
+					<input 
+						type="text"
+						value={ title }
+						onChange={
+							event => {
+								this.setState({
+									title: event.target.value
+								})
+							}
 						}
-					}
-				/>
-				<br/><br/>
-				<p>Description: </p>
-				<input 
-					type="text"
-					value={ desc }
-					onChange={
-						event => {
-							this.setState({
-								desc: event.target.value
-							})
+					/>
+
+					<br/><br/>
+
+					<p>Description: </p>
+
+					<input 
+						type="text"
+						value={ desc }
+						onChange={
+							event => {
+								this.setState({
+									desc: event.target.value
+								})
+							}
 						}
-					}
-				/>
-				<br/><br/>
-				<button
-					onClick={ event => {
-						onAddCard({
-							title : title,
-							desc : desc
-						})
-						this.setState({
-							title: '',
-							desc: ''
-						})
-					}}
-				>
-					Add new card
-				</button>
+					/>
+
+					<br/><br/>
+
+					<button
+						type="submit"
+						onClick={ event => {
+							onAddCard({
+								title : title,
+								desc : desc
+							})
+							this.setState({
+								title: '',
+								desc: ''
+							})
+						}}
+					>
+						Add new card
+					</button>
+					
+				</form>
 
       </div>
     )
