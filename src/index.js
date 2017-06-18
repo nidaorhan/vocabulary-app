@@ -15,11 +15,11 @@ import {
   createStore,
   applyMiddleware,
   compose }                             from 'redux';
-import  { Provider }                    from 'react-redux'
+import { Provider }                    from 'react-redux'
 import {
   syncHistoryWithStore,
   routerReducer }                       from 'react-router-redux'
-import  thunk                           from 'redux-thunk';
+import thunk                            from 'redux-thunk';
 
 // main reducers
 import FirstPageReducer                 from './pages/FirstPage/redux';

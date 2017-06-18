@@ -6,6 +6,7 @@ import { connect }                from 'react-redux'
 import * as nidaActions           from './redux'
 import AddCard                    from './AddCard'
 import ShowCards                  from './ShowCards'
+import Study                      from './Study'
 
 @connect(
   state => ({
@@ -53,9 +54,9 @@ export default class NidaContent extends Component {
 				<div style={{float:'left', marginRight:100+'px'}}>
 					<ShowCards onDeleteCard={ this.onDeleteCard }  cards={ cards } />
 				</div>
-				
-				
-
+				<div style={{float:'left', marginRight:100+'px'}}>
+					<Study onAddCard={ this.onAddCard } cards={ cards } />
+				</div>
       </div>
     )
   }

@@ -1,26 +1,27 @@
-import React, { Component }       from 'react'
-import PropTypes                  from 'prop-types'
+import React, { Component }            from 'react'
 
-export default class ShowCards extends Component {
+export default class Study extends Component {
   
-  static propTypes = {
-    cards: PropTypes.array.isRequired
-  }
-	
 	state = {
 		cardIndex : 0,
-		showDesc : false
+		showDesc  : false
 	}
 
-	onShowPreviousCardClicked = event => {
+	onHardClicked = event => {
 		let { cardIndex } = this.state
+		let { cards, onAddCard } 		= this.props
+		let hardWord = {
+			title: cards[ cardIndex ][ 'title' ],
+			desc : cards[ cardIndex ][ 'desc' ]
+		}
+		onAddCard(hardWord)
 		this.setState({
-			cardIndex : cardIndex - 1,
+			cardIndex : cardIndex + 1,
 			showDesc  : false
 		})
 	}
 
-	onShowNextCardClicked = event => {
+	onEasyClicked = event => {
 		let { cardIndex } = this.state
 		this.setState({
 			cardIndex : cardIndex + 1,
@@ -28,18 +29,8 @@ export default class ShowCards extends Component {
 		})
 	}
 
-	onDeleteButtonClicked = event => {
-		let { onDeleteCard } = this.props
-		let { cardIndex } = this.state
-		onDeleteCard(cardIndex)
-		this.setState({
-			cardIndex : cardIndex - 1,
-			showDesc  : false
-		})
-	}
 
 	getCurrentCard(){
-		
 		let title = '' 
 		let desc 	= ''
 
@@ -71,7 +62,7 @@ export default class ShowCards extends Component {
 		
       <div>
 				
-				<h1>SHOW CARDS</h1>
+				<h1>STUDY</h1>
 
 				<p>
 					Title: 
@@ -91,17 +82,17 @@ export default class ShowCards extends Component {
 				}
 				
 				<button
-					disabled={ !cards.length || cardIndex === 0 }
-					onClick={ this.onShowPreviousCardClicked }
+					disabled={ !cards.length }
+					onClick={ this.onHardClicked }
 				>
-					Previous
+					Hard
 				</button>
 
 				<button
 					disabled={ !cards.length || cardIndex + 1 === cards.length }
-					onClick={ this.onShowNextCardClicked }
+					onClick={ this.onEasyClicked }
 				>
-					Next
+					Easy
 				</button>
 				<br/>
 				<button
@@ -109,13 +100,6 @@ export default class ShowCards extends Component {
 					onClick={ this.onToggleDescVisibilityClicked }
 				>
 					{ showDesc ? 'Hide Description' : 'Show Description' }
-				</button>
-
-				<button
-						disabled={ !cards.length }
-						onClick={ this.onDeleteButtonClicked }
-					>
-						Delete
 				</button>
 
       </div>
