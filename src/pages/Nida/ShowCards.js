@@ -12,10 +12,28 @@ export default class ShowCards extends Component {
 		showDesc : false
 	}
 
+	onShowPreviousCardClicked = event => {
+		let { cardIndex } = this.state
+		this.setState({
+			cardIndex : cardIndex - 1,
+			showDesc  : false
+		})
+	}
+
 	onShowNextCardClicked = event => {
 		let { cardIndex } = this.state
 		this.setState({
 			cardIndex : cardIndex + 1,
+			showDesc  : false
+		})
+	}
+
+	onDeleteButtonClicked = event => {
+		let { onDeleteCard } 		= this.props
+		let { cardIndex } = this.state
+		onDeleteCard(cardIndex)
+		this.setState({
+			cardIndex : cardIndex - 1,
 			showDesc  : false
 		})
 	}
@@ -28,7 +46,7 @@ export default class ShowCards extends Component {
 		let { cards } 		= this.props
 		let { cardIndex } = this.state
 
-		if( cards.length && cardIndex + 1 <= cards.length ){
+		if( cards.length ){
 			title = cards[ cardIndex ][ 'title' ]
 			desc 	= cards[ cardIndex ][ 'desc' ]
 		}
@@ -71,7 +89,13 @@ export default class ShowCards extends Component {
 						{ desc }
 					</p>
 				}
-					
+				
+				<button
+					disabled={ !cards.length || cardIndex === 0 }
+					onClick={ this.onShowPreviousCardClicked }
+				>
+					Previous
+				</button>
 
 				<button
 					disabled={ !cards.length || cardIndex + 1 === cards.length }
@@ -86,6 +110,13 @@ export default class ShowCards extends Component {
 				>
 					{ showDesc ? 'Hide Description' : 'Show Description' }
 				</button>
+
+				<button
+						disabled={ !cards.length }
+						onClick={ this.onDeleteButtonClicked }
+					>
+						Delete
+					</button>
 
       </div>
     )

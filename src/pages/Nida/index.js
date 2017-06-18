@@ -30,6 +30,16 @@ export default class NidaContent extends Component {
 		)
 	}
 
+	onDeleteCard = ( cardIndexToBeDeleted = '' ) => {
+		let { cards } = this.props.nidaState
+		let { nidaActions } = this.props
+		var newCards = cards.filter( item => item !== cards[ cardIndexToBeDeleted ] )
+		nidaActions.setRootReduxStateProp(
+			'cards', 
+			newCards
+		)
+	}
+
   render() {
 		
 		let { cards } = this.props.nidaState
@@ -41,7 +51,7 @@ export default class NidaContent extends Component {
 					<AddCard onAddCard={ this.onAddCard } />
 				</div>
 				<div style={{float:'left', marginRight:100+'px'}}>
-					<ShowCards cards={ cards } />
+					<ShowCards onDeleteCard={ this.onDeleteCard }  cards={ cards } />
 				</div>
 				
 				
