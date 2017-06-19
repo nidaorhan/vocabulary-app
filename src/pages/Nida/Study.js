@@ -4,45 +4,10 @@ export default class Study extends Component {
   
 	state = {
 		cardIndex : 0,
-		showDesc  : false,
-		finished  : false
+		showDesc  : false
 	}
 
-	componentWillUpdate(nextProps, nextState) {
-		let { cardIndex } = this.state
-		let { cards } 		= this.props
-		if (cards.length===cardIndex+1) {
-			this.setState({
-				finished: true
-			})
-		}
-	}
-
-	onHardClicked = event => {
-		let { cardIndex } = this.state
-		let { cards, onAddCard } 		= this.props
-		let hardWord = {
-			title: cards[ cardIndex ][ 'title' ],
-			desc : cards[ cardIndex ][ 'desc' ],
-			hardWord : true
-		}
-		onAddCard(hardWord)
-		this.setState({
-			cardIndex : cardIndex + 1,
-			showDesc  : false
-		})
-	}
-
-	onEasyClicked = event => {
-		let { cardIndex } = this.state
-		this.setState({
-			cardIndex : cardIndex + 1,
-			showDesc  : false
-		})
-	}
-
-
-	getCurrentCard(){
+	getCurrentCard = () => {
 		let title = '' 
 		let desc 	= ''
 
@@ -57,8 +22,42 @@ export default class Study extends Component {
 		return { title, desc }
 	}
 
+	onEasyClicked = () => {
+		let { cardIndex } = this.state
+
+		this.setState({
+			cardIndex : cardIndex + 1,
+			showDesc  : false
+		})
+	}
+
+	onHardClicked = () => {
+		let { cardIndex } = this.state
+		let { cards, onAddCard } 		= this.props
+
+		let hardWord = {
+			title: cards[ cardIndex ][ 'title' ],
+			desc : cards[ cardIndex ][ 'desc' ],
+			hardWord : true
+		}
+		onAddCard(hardWord)
+
+		this.setState({
+			cardIndex : cardIndex + 1,
+			showDesc  : false
+		})
+	}
+
+	onStudyAgainClicked = () => {
+		this.setState({
+			finished:false,
+			cardIndex: 0
+		})
+	}
+
 	onToggleDescVisibilityClicked = event => {
 		let { showDesc } = this.state
+
 		this.setState({ showDesc: !showDesc })
 	}
 
@@ -66,76 +65,75 @@ export default class Study extends Component {
 
   	let { cards } = this.props
 
-		let { showDesc, cardIndex, finished } = this.state
+		let { showDesc, cardIndex } = this.state
 		
 		let { title, desc } = this.getCurrentCard()
 
+		let finishedCards = cards.length === cardIndex 
+
+		let disabled = !cards.length || finishedCards
+
     return (
 		
-      <div className="study">
-				
-				<div
-					style={{ display: finished ? 'none' : 'block' }}
-					className="study-title"> 
-					{ title } 
-				</div>
-			
-				<div 
-					className="study-desc"
-					style={{ 
-						visibility: (showDesc ? 'visible' : 'hidden'),
-						display: (finished ? 'none' : 'block') 
-					}}>
-					{ desc }
-				</div>
-				
-				<button
-					className="cta visibility"
-					disabled={ !cards.length }
-					onClick={ this.onToggleDescVisibilityClicked }
-					style={{ display: finished ? 'none' : 'inline-block' }}
-				>
-					{ showDesc ? 'Hide' : 'Show' }
-				</button>
-				<br/>
-				<button
-					className="cta hardness"
-					disabled={ !cards.length || cardIndex === cards.length }
-					onClick={ this.onHardClicked }
-					style={{ display: finished ? 'none' : 'inline-block' }}
-				>
-					Hard
-				</button>
+      <div className="study-container">
 
-				<button
-					className="cta hardness"
-					disabled={ !cards.length || cardIndex === cards.length }
-					onClick={ this.onEasyClicked }
-					style={{ display: finished ? 'none' : 'inline-block' }}
-				>
-					Easy
-				</button>
+				{
+					!finishedCards &&
+					<div className="card">
+						<div className="study-title">{ title }</div>
+						<div 
+							className="study-desc"
+							style={{ visibility: (showDesc ? 'visible' : 'hidden')}}>
+							{ desc }
+						</div>
+	      	</div>
+				}
 
-				<div 
-					className="congrats"
-					style={{ display: finished ? 'block' : 'none' }}
-				>
-					Congratulations!
-				</div>
+				{
+					!finishedCards &&
+					<div className="buttons-container">
+		      	<button
+							className="cta visibility"
+							disabled={ disabled }
+							onClick={ this.onToggleDescVisibilityClicked }
+						>
+							{ showDesc ? 'Hide' : 'Show' }
+						</button>
 
-				<button
-					className="cta visibility"
-					onClick={ event => {
-						this.setState({
-							finished:false,
-							cardIndex: 0
-						})
-					} }
-					style={{ display: finished ? 'inline-block' : 'none' }}
-				>
-					Study again
-				</button>
-				
+						<br/>
+
+						<button
+							className="cta hardness"
+							disabled={ disabled }
+							onClick={ this.onHardClicked }
+						>
+							Hard >
+						</button>
+
+						<button
+							className="cta hardness"
+							disabled={ disabled }
+							onClick={ this.onEasyClicked }
+						>
+							Easy >
+						</button>
+	      	</div>
+				}
+      	
+				{
+					finishedCards &&
+					<div className="congrats">Congratulations!</div>
+				}
+
+				{
+					finishedCards &&
+					<button
+						className="cta visibility"
+						onClick={ this.onStudyAgainClicked }
+					>
+						Study again
+					</button>
+				}
 
       </div>
     )

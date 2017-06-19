@@ -3,7 +3,7 @@ body {
 }
 
 h1 {
-  font-size: 27px;
+  font-size: 23px;
   letter-spacing: 0.5px;
 }
 
@@ -14,22 +14,36 @@ button {
 
 input {
 	padding: 10px;
-  width: 20%;
   border: 1px solid #e5e6e6;
-
+  width:50%
 }
 
 table {
-	padding: 10px;
+  width:100%;
+	padding-top: 18px;
 	text-align: center
 }
 th,td {
 	border-top: 1px solid #e5e6e6;
-	padding: 10px 40px;
+	padding: 10px 20px;
 }
 
 td {
 	font-size: 14px
+}
+
+.center-column-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; 
+  -webkit-box-orient: vertical; 
+  -webkit-box-direction: normal; 
+  -ms-flex-direction: column; 
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -ms-grid-row-align: center;
+  align-items: center
 }
 
 .label {
@@ -104,37 +118,42 @@ td {
 	    }          
 		}    
 	}
+  .table-container {
+    padding: 40px 0 20px 0
+  }
 	.settings-container {
-    padding: 20px 50px;
-	}
-	.table-container {
-    padding: 20px 50px;
+    padding: 20px 0
 	}
 	.study-container {
 		padding: 20px 50px;
-    .study {
-  		text-align: center;
-      width:100%;
-    	.study-title {
-  	    font-size: 35px;
-  	    letter-spacing: 0.5px;
-  	    color: #424242;
-  	    margin: 32px 0 22px 0;
-    	}
-    	.study-desc {
-  	    font-size: 25px;
-  	    letter-spacing: 0.5px;
-  	    color: #afafaf;
-  	    margin: 42px;
-      }
-      .congrats { 
-        margin-top: 42px;
-        margin-bottom: 60px;
-        font-size: 40px;
-        letter-spacing: 0.7px;
-        font-size: 30px
-      }
-	  }
+		text-align: center;
+    width:100%;
+    .card {
+      background: #efefef;
+      width: 25%;
+      margin: 10px auto 20px auto;
+      padding-top: 30px;
+      padding-bottom: 40px;
+        .study-title {
+          font-size: 35px;
+          letter-spacing: 0.5px;
+          color: #424242;
+          margin-bottom: 30px
+        }
+        .study-desc {
+          font-size: 25px;
+          letter-spacing: 0.5px;
+          color: #8d9092;
+        }
+    }
+  	
+    .congrats { 
+      margin-top: 42px;
+      margin-bottom: 60px;
+      font-size: 40px;
+      letter-spacing: 0.7px;
+      font-size: 30px
+    }
   }
 }
 

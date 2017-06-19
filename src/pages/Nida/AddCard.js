@@ -23,14 +23,11 @@ export default class AddCard extends Component {
 
     return (
 
-      <div>
-				
+      <div className="settings-container" >
 				<h1>ADD NEW CARD</h1>
-				
 				<form onSubmit={ this.onFormSubmitted } >
 
 					<div className="label"> Title: </div>
-
 					<input 
 						type="text"
 						value={ title }
@@ -46,7 +43,6 @@ export default class AddCard extends Component {
 					<br/><br/>
 
 					<div className="label">Description: </div>
-
 					<input 
 						type="text"
 						value={ desc }
@@ -64,22 +60,23 @@ export default class AddCard extends Component {
 					<button
 						className="cta"
 						type="submit"
-						onClick={ event => {
-							onAddCard({
-								title : title,
-								desc : desc
-							})
-							this.setState({
-								title: '',
-								desc: ''
-							})
-						}}
+						onClick={ 
+							event => {
+								onAddCard({
+									title : title,
+									desc : desc
+								})
+								this.setState({
+									title: '',
+									desc: ''
+								})
+							}
+						}
 					>
 						Add new card
 					</button>
 					
 				</form>
-
       </div>
     )
   }

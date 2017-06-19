@@ -5,7 +5,7 @@ import { connect }                from 'react-redux'
 
 import * as nidaActions           from './redux'
 import AddCard                    from './AddCard'
-import ShowCards                  from './ShowCards'
+import CardsTable                 from './CardsTable'
 import Study                      from './Study'
 
 @connect(
@@ -35,21 +35,21 @@ export default class NidaContent extends Component {
 		)
 	}
 
-	onDeleteCard = ( cardIndexToBeDeleted = '' ) => {
+	onDeleteCard = ( cardIndexToBeDeleted ) => {
 		let { cards } = this.props.nidaState
 		let { nidaActions } = this.props
-		var newCards = cards.filter( item => item !== cards[ cardIndexToBeDeleted ] )
+		var newCards = cards.filter( (item, index) => index !== cardIndexToBeDeleted )
 		nidaActions.setRootReduxStateProp(
 			'cards', 
 			newCards
 		)
 	}
 
-	onSettingsClicked = event => {
+	onSettingsClicked = () => {
 		this.setState({showStudy: false})
 	}
 
-	onStudyClicked = event => {
+	onStudyClicked = () => {
 		this.setState({showStudy: true}) 
 	}
 
@@ -61,42 +61,41 @@ export default class NidaContent extends Component {
     return (
 
       <div id="main-wrapper" >
-
       	<div className="tabs-wrapper">
 					<button
 	      		className={"tabs " + (!showStudy ? 'active' : '')}
-						onClick={ event => this.onSettingsClicked() }
+						onClick={ this.onSettingsClicked }
 					>
 						SETTINGS
 					</button>
 					<button
 						className={"tabs " + (showStudy ? 'active' : '')}
-						onClick={ event => this.onStudyClicked() }
+						onClick={ this.onStudyClicked }
 					>
 						STUDY
 					</button>
       	</div>
 
-				<div>
+				<div className="center-column-flex">
 
-					<div 
-						className="settings-container"
-						style={{display: showStudy ? 'none' : 'block' }} >
-						<AddCard onAddCard={ this.onAddCard } /> 
-					</div>
-					<div 
-						className="table-container"
-						style={{display: showStudy ? 'none' : 'block' }} >
-						<ShowCards cards={ cards } /> 
-					</div>
-					<div 
-						className="study-container"
-						style={{display: showStudy ? 'flex' : 'none'}} >
-						<Study onAddCard={ this.onAddCard } cards={ cards } /> 
-					</div>
-					
+					{
+						!showStudy &&
+						<div>
+							<CardsTable 
+								onDeleteCard={ this.onDeleteCard } 
+								cards={ cards } /> 
+							<AddCard onAddCard={ this.onAddCard } /> 
+						</div>
+					}
+
+					{
+						showStudy &&
+						<Study 
+							onAddCard={ this.onAddCard } 
+							cards={ cards } /> 
+					}
+							
 				</div>
-				
       </div>
     )
   }
