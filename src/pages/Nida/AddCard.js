@@ -29,7 +29,7 @@ export default class AddCard extends Component {
 				
 				<form onSubmit={ this.onFormSubmitted } >
 
-					<p>Title: </p>
+					<div className="label"> Title: </div>
 
 					<input 
 						type="text"
@@ -45,7 +45,7 @@ export default class AddCard extends Component {
 
 					<br/><br/>
 
-					<p>Description: </p>
+					<div className="label">Description: </div>
 
 					<input 
 						type="text"
@@ -62,6 +62,7 @@ export default class AddCard extends Component {
 					<br/><br/>
 
 					<button
+						className="cta"
 						type="submit"
 						onClick={ event => {
 							onAddCard({

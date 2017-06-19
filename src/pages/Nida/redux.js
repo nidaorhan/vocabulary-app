@@ -21,7 +21,15 @@ const
 
   /* initial state for this part of the redux state */
   initialState = {
-    cards: []
+    cards: [
+    {
+      title: 'work',
+      desc: 'çalışmak'
+    },
+    {
+      title: 'play',
+      desc: 'oynamak'
+    }]
   }
 
 /* ---- ---- ---- ---- ---- ---- ---- ---- ---- REDUCER ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- */

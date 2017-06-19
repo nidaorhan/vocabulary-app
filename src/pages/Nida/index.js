@@ -21,6 +21,10 @@ export default class NidaContent extends Component {
   static propTypes = {
     name: PropTypes.string
   }
+
+  state = {
+  	showStudy: false
+  }
 	
 	onAddCard = ( cardObject = {} ) => {
 		let { cards } = this.props.nidaState
@@ -41,22 +45,58 @@ export default class NidaContent extends Component {
 		)
 	}
 
+	onSettingsClicked = event => {
+		this.setState({showStudy: false})
+	}
+
+	onStudyClicked = event => {
+		this.setState({showStudy: true}) 
+	}
+
   render() {
 		
 		let { cards } = this.props.nidaState
+		let { showStudy } = this.state
 
     return (
 
-      <div>
-				<div style={{float:'left', marginRight:100+'px'}}>
-					<AddCard onAddCard={ this.onAddCard } />
+      <div id="main-wrapper" >
+
+      	<div className="tabs-wrapper">
+					<button
+	      		className={"tabs " + (!showStudy ? 'active' : '')}
+						onClick={ event => this.onSettingsClicked() }
+					>
+						SETTINGS
+					</button>
+					<button
+						className={"tabs " + (showStudy ? 'active' : '')}
+						onClick={ event => this.onStudyClicked() }
+					>
+						STUDY
+					</button>
+      	</div>
+
+				<div>
+
+					<div 
+						className="settings-container"
+						style={{display: showStudy ? 'none' : 'block' }} >
+						<AddCard onAddCard={ this.onAddCard } /> 
+					</div>
+					<div 
+						className="table-container"
+						style={{display: showStudy ? 'none' : 'block' }} >
+						<ShowCards cards={ cards } /> 
+					</div>
+					<div 
+						className="study-container"
+						style={{display: showStudy ? 'flex' : 'none'}} >
+						<Study onAddCard={ this.onAddCard } cards={ cards } /> 
+					</div>
+					
 				</div>
-				<div style={{float:'left', marginRight:100+'px'}}>
-					<ShowCards onDeleteCard={ this.onDeleteCard }  cards={ cards } />
-				</div>
-				<div style={{float:'left', marginRight:100+'px'}}>
-					<Study onAddCard={ this.onAddCard } cards={ cards } />
-				</div>
+				
       </div>
     )
   }

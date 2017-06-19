@@ -7,116 +7,39 @@ export default class ShowCards extends Component {
     cards: PropTypes.array.isRequired
   }
 	
-	state = {
-		cardIndex : 0,
-		showDesc : false
-	}
-
-	onShowPreviousCardClicked = event => {
-		let { cardIndex } = this.state
-		this.setState({
-			cardIndex : cardIndex - 1,
-			showDesc  : false
-		})
-	}
-
-	onShowNextCardClicked = event => {
-		let { cardIndex } = this.state
-		this.setState({
-			cardIndex : cardIndex + 1,
-			showDesc  : false
-		})
-	}
-
-	onDeleteButtonClicked = event => {
-		let { onDeleteCard } = this.props
-		let { cardIndex } = this.state
-		onDeleteCard(cardIndex)
-		this.setState({
-			cardIndex : cardIndex - 1,
-			showDesc  : false
-		})
-	}
-
-	getCurrentCard(){
-		
-		let title = '' 
-		let desc 	= ''
-
-		let { cards } 		= this.props
-		let { cardIndex } = this.state
-
-		if( cards.length && cardIndex + 1 <= cards.length ){
-			title = cards[ cardIndex ][ 'title' ]
-			desc 	= cards[ cardIndex ][ 'desc' ]
-		}
-
-		return { title, desc }
-	}
-
-	onToggleDescVisibilityClicked = event => {
-		let { showDesc } = this.state
-		this.setState({ showDesc: !showDesc })
-	}
-
   render() {
 
   	let { cards } = this.props
-
-		let { showDesc, cardIndex } = this.state
-		
-		let { title, desc } = this.getCurrentCard()
-
+		let filteredCards = cards.filter( item => {
+			return Object.keys(item).length === 2
+		})
     return (
 		
       <div>
 				
-				<h1>SHOW CARDS</h1>
-
-				<p>
-					Title: 
-				</p>
-				<p style={{color:'grey',fontSize:'15px'}}> 
-					{ title } 
-				</p>
-
-				<p>
-					Description: 
-				</p>
-				{
-					showDesc &&
-					<p style={{color:'grey',fontSize:'15px'}}>
-						{ desc }
-					</p>
-				}
-				
-				<button
-					disabled={ !cards.length || cardIndex === 0 }
-					onClick={ this.onShowPreviousCardClicked }
-				>
-					Previous
-				</button>
-
-				<button
-					disabled={ !cards.length || cardIndex + 1 === cards.length }
-					onClick={ this.onShowNextCardClicked }
-				>
-					Next
-				</button>
-				<br/>
-				<button
-					disabled={ !cards.length }
-					onClick={ this.onToggleDescVisibilityClicked }
-				>
-					{ showDesc ? 'Hide Description' : 'Show Description' }
-				</button>
-
-				<button
-						disabled={ !cards.length }
-						onClick={ this.onDeleteButtonClicked }
-					>
-						Delete
-				</button>
+				<h1>CARD LIST</h1>
+				<table>
+					<thead>
+						<tr>
+								<th>#</th>
+						    <th>Title</th>
+						    <th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						{filteredCards.map((card,i) => {
+							return (
+								<tr key={i}>
+									<td key={i+1} >{ i+1 }</td>
+							    <td key={i+2} >{ card.title }</td>
+							    <td key={i+3}>{ card.desc }</td>
+							  </tr>
+							)
+						})}
+					</tbody>
+					
+					
+				</table>
 
       </div>
     )
