@@ -4,16 +4,19 @@ import PropTypes                  from 'prop-types'
 export default class CardsTable extends Component {
   
   static propTypes = {
-    cards: PropTypes.array.isRequired
+    cards 			: PropTypes.array.isRequired,
+    onEditCard 	: PropTypes.func.isRequired,
   }
 
   state = {
-  	editing: false
+  	itemIndexBeingEdited: false,
+  	itemBeingEdited_TitleValue : '',
+  	itemBeingEdited_DescValue : ''
   }
 
   onEditClicked = () => {
   	this.setState({
-  		editing: true
+  		//itemIndexBeingEdited: true
   	})
   }
 	
@@ -36,7 +39,13 @@ export default class CardsTable extends Component {
 
   	let { filteredCards } = this.getFilteredCards()
 		
-		let { editing } = this.state
+		let { 
+			itemIndexBeingEdited,
+			itemBeingEdited_TitleValue,
+			itemBeingEdited_DescValue
+		} = this.state
+
+		let { onEditCard } = this.props
 
     return (
 		
@@ -54,31 +63,130 @@ export default class CardsTable extends Component {
 						</tr>
 					</thead>
 					<tbody>
-						{filteredCards.map((card,i) => {
-							return (
-								<tr key={'row' + i}>
-									<td key={'#' + i+1} >{ i+1 }</td>
-									<td key={'title' + i+2} >{ card.title }</td> 
-									<td key={'desc' + i+3}>{ card.desc }</td>
-									<td className="button-cell">
-							    	<button
-											className="cta"
-											onClick={ this.onEditClicked }
-										>
-											Edit
-										</button>
-							    </td>
-							    <td className="button-cell">
-							    	<button
-											className="cta"
-											onClick={ () => this.onDeleteClicked(i) }
-										>
-											Delete
-										</button>
-							    </td>
-							  </tr>
-							)
-						})}
+						{
+							filteredCards.map( ( card, index ) => {
+
+								let isBeingEdited = itemIndexBeingEdited === index 
+
+								return (
+									<tr key={ `row-${index}` }>
+										<td>
+											{ index+1 }
+										</td>
+										<td>
+											{ 
+												isBeingEdited
+												? <form 
+														onSubmit={ event => {
+															event.preventDefault()
+															itemBeingEdited_TitleValue 	= itemBeingEdited_TitleValue.trim()
+															itemBeingEdited_DescValue 	= itemBeingEdited_DescValue.trim()
+															if( itemBeingEdited_TitleValue.length && itemBeingEdited_DescValue.length ){
+																onEditCard( 
+																	index, 
+																	{ 
+																		title : itemBeingEdited_TitleValue,
+																		desc  : itemBeingEdited_DescValue
+																	} 
+																)
+																this.setState({ itemIndexBeingEdited : null })
+																// this.props.onItemEdited( index, { title : '', desc : '' } )
+																// props tan gelen onItemEdited fonksiyonunu cagir, 
+																// index i ve title ve desc i gec
+															} 
+														} }
+													>
+														<input 
+															type="text" 
+															value={ itemBeingEdited_TitleValue } 
+															onChange={ event => this.setState({
+																itemBeingEdited_TitleValue : event.target.value
+															}) }
+														/>
+													</form>
+												: card.title
+											}
+										</td> 
+										<td>
+											{
+												isBeingEdited
+												? <form 
+														onSubmit={ event => {
+															event.preventDefault()
+															itemBeingEdited_TitleValue 	= itemBeingEdited_TitleValue.trim()
+															itemBeingEdited_DescValue 	= itemBeingEdited_DescValue.trim()
+															if( itemBeingEdited_TitleValue.length && itemBeingEdited_DescValue.length ){
+																onEditCard( 
+																	index, 
+																	{ 
+																		title : itemBeingEdited_TitleValue,
+																		desc  : itemBeingEdited_DescValue
+																	} 
+																)
+																this.setState({ itemIndexBeingEdited : null })
+																// this.props.onItemEdited( index, { title : '', desc : '' } )
+																// props tan gelen onItemEdited fonksiyonunu cagir, 
+																// index i ve title ve desc i gec
+															} 
+														} }
+													>
+														<input 
+															type="text" 
+															value={ itemBeingEdited_DescValue } 
+															onChange={ event => this.setState({
+																itemBeingEdited_DescValue : event.target.value
+															}) }
+														/>
+													</form>
+												: card.desc
+											}
+										</td>
+										<td className="button-cell">
+								    	<button
+												className="cta"
+												onClick={ event => {
+													if( isBeingEdited ){
+														itemBeingEdited_TitleValue 	= itemBeingEdited_TitleValue.trim()
+														itemBeingEdited_DescValue 	= itemBeingEdited_DescValue.trim()
+														if( itemBeingEdited_TitleValue.length && itemBeingEdited_DescValue.length ){
+															onEditCard( 
+																index, 
+																{ 
+																	title : itemBeingEdited_TitleValue,
+																	desc  : itemBeingEdited_DescValue
+																} 
+															)
+															this.setState({ itemIndexBeingEdited : null })
+															// this.props.onItemEdited( index, { title : '', desc : '' } )
+															// props tan gelen onItemEdited fonksiyonunu cagir, 
+															// index i ve title ve desc i gec
+														}
+													}else{
+														this.setState({ 
+															itemIndexBeingEdited 				: index,
+															itemBeingEdited_TitleValue 	: card.title,
+															itemBeingEdited_DescValue 	: card.desc
+														})
+													}
+												} }
+											>
+												{
+													isBeingEdited ? 'Save' : 'Edit'
+												}
+											</button>
+								    </td>
+								    <td className="button-cell">
+								    	<button
+												className="cta"
+												onClick={ () => this.onDeleteClicked( index ) }
+											>
+												Delete
+											</button>
+								    </td>
+								  </tr>
+								)
+							})
+						}
 					</tbody>
 					
 					

@@ -46,11 +46,24 @@ export default class NidaContent extends Component {
 	}
 
 	onSettingsClicked = () => {
-		this.setState({showStudy: false})
+		this.setState({ showStudy: false })
 	}
 
 	onStudyClicked = () => {
-		this.setState({showStudy: true}) 
+		this.setState({ showStudy: true }) 
+	}
+
+	onEditCard = ( index, updatedItemObject ) => {
+		let { cards } = this.props.nidaState
+		let { nidaActions } = this.props
+		nidaActions.setRootReduxStateProp(
+			'cards', 
+			[ 
+				...cards.slice( 0, index ),
+				updatedItemObject,
+				...cards.slice( index + 1 )
+			]
+		)
 	}
 
   render() {
@@ -83,8 +96,11 @@ export default class NidaContent extends Component {
 						<div className="settings" >
 							<CardsTable 
 								onDeleteCard={ this.onDeleteCard } 
+								onEditCard={ this.onEditCard } 
 								cards={ cards } /> 
-							<AddCard onAddCard={ this.onAddCard } /> 
+							<AddCard 
+								onAddCard={ this.onAddCard } 
+							/> 
 						</div>
 					}
 
