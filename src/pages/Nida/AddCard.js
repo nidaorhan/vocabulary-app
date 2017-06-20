@@ -23,8 +23,7 @@ export default class AddCard extends Component {
 
     return (
 
-      <div className="settings-container" >
-				<h1>ADD NEW CARD</h1>
+      <div className="add-card-container" >
 				<form onSubmit={ this.onFormSubmitted } >
 
 					<div className="label"> Title: </div>

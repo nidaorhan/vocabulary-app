@@ -5,6 +5,11 @@ body {
 h1 {
   font-size: 23px;
   letter-spacing: 0.5px;
+  &.add-card-title {
+    color: #b9b9b9;
+    font-weight: 500;
+    margin-bottom: 24px
+  }
 }
 
 button {
@@ -15,13 +20,13 @@ button {
 input {
 	padding: 10px;
   border: 1px solid #e5e6e6;
-  width:50%
+  width:100%
 }
 
 table {
-  width:100%;
 	padding-top: 18px;
-	text-align: center
+	text-align: center;
+  width: 100%
 }
 th,td {
 	border-top: 1px solid #e5e6e6;
@@ -32,7 +37,7 @@ td {
 	font-size: 14px
 }
 
-.center-column-flex {
+.column-flex-center {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; 
@@ -44,6 +49,20 @@ td {
   -ms-flex-align: center;
   -ms-grid-row-align: center;
   align-items: center
+}
+
+.column-flex-start {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; 
+  -webkit-box-orient: vertical; 
+  -webkit-box-direction: normal; 
+  -ms-flex-direction: column; 
+  flex-direction: column;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  -ms-grid-row-align: flex-start;
+  align-items: flex-start
 }
 
 .label {
@@ -118,14 +137,24 @@ td {
 	    }          
 		}    
 	}
-  .table-container {
-    padding: 40px 0 20px 0
+
+  .settings {
+    margin-left: 50px;
   }
-	.settings-container {
-    padding: 20px 0
-	}
+
+  .table-container {
+    padding: 20px 0;
+    float:left;
+    margin-right: 100px;
+    width: 50%;
+    min-height: 200px;
+  }
+  .add-card-container {
+    padding-top: 79px;
+    width:20%
+  }
 	.study-container {
-		padding: 20px 50px;
+		padding: 20px 0;
 		text-align: center;
     width:100%;
     .card {

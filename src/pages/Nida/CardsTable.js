@@ -10,8 +10,14 @@ export default class CardsTable extends Component {
   state = {
   	editing: false
   }
+
+  onEditClicked = () => {
+  	this.setState({
+  		editing: true
+  	})
+  }
 	
-	deleteCard = cardIndexToBeDeleted => {
+	onDeleteClicked = cardIndexToBeDeleted => {
 		let { onDeleteCard } = this.props
 		onDeleteCard(cardIndexToBeDeleted)
 	}
@@ -43,6 +49,8 @@ export default class CardsTable extends Component {
 								<th>#</th>
 						    <th>Title</th>
 						    <th>Description</th>
+						    <th></th>
+						    <th></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -50,19 +58,20 @@ export default class CardsTable extends Component {
 							return (
 								<tr key={'row' + i}>
 									<td key={'#' + i+1} >{ i+1 }</td>
-							    <td key={'title' + i+2} >{ card.title }</td> 
-							    <td key={'desc' + i+3}>{ card.desc }</td>
-							    <td>
+									<td key={'title' + i+2} >{ card.title }</td> 
+									<td key={'desc' + i+3}>{ card.desc }</td>
+									<td className="button-cell">
 							    	<button
 											className="cta"
+											onClick={ this.onEditClicked }
 										>
 											Edit
 										</button>
 							    </td>
-							    <td>
+							    <td className="button-cell">
 							    	<button
 											className="cta"
-											onClick={ () => this.deleteCard(i) }
+											onClick={ () => this.onDeleteClicked(i) }
 										>
 											Delete
 										</button>

@@ -76,11 +76,11 @@ export default class NidaContent extends Component {
 					</button>
       	</div>
 
-				<div className="center-column-flex">
+				<div>
 
 					{
 						!showStudy &&
-						<div>
+						<div className="settings" >
 							<CardsTable 
 								onDeleteCard={ this.onDeleteCard } 
 								cards={ cards } /> 

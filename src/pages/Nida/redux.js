@@ -23,12 +23,24 @@ const
   initialState = {
     cards: [
     {
-      title: 'work',
-      desc: 'çalışmak'
+      title: 'tamper',
+      desc: 'gizlice kurcalamak'
     },
     {
-      title: 'play',
-      desc: 'oynamak'
+      title: 'compromise',
+      desc: 'anlaşmak'
+    },
+    {
+      title: 'redundant',
+      desc: 'gereksiz'
+    },
+    {
+      title: 'dispel',
+      desc: 'yok etmek'
+    },
+    {
+      title: 'quote',
+      desc: 'teklif'
     }]
   }
 
