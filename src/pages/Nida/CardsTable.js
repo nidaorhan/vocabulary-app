@@ -9,21 +9,10 @@ export default class CardsTable extends Component {
   }
 
   state = {
-  	itemIndexBeingEdited: false,
-  	itemBeingEdited_TitleValue : '',
-  	itemBeingEdited_DescValue : ''
+  	indexOfEdited: false,
+  	editedItem_Title : '',
+  	editedItem_Desc : ''
   }
-
-  onEditClicked = () => {
-  	this.setState({
-  		//itemIndexBeingEdited: true
-  	})
-  }
-	
-	onDeleteClicked = cardIndexToBeDeleted => {
-		let { onDeleteCard } = this.props
-		onDeleteCard(cardIndexToBeDeleted)
-	}
 
 	getFilteredCards = () => {
 		let { cards } = this.props
@@ -40,12 +29,12 @@ export default class CardsTable extends Component {
   	let { filteredCards } = this.getFilteredCards()
 		
 		let { 
-			itemIndexBeingEdited,
-			itemBeingEdited_TitleValue,
-			itemBeingEdited_DescValue
+			indexOfEdited,
+			editedItem_Title,
+			editedItem_Desc
 		} = this.state
 
-		let { onEditCard } = this.props
+		let { onEditCard, onDeleteCard } = this.props
 
     return (
 		
@@ -66,7 +55,7 @@ export default class CardsTable extends Component {
 						{
 							filteredCards.map( ( card, index ) => {
 
-								let isBeingEdited = itemIndexBeingEdited === index 
+								let isBeingEdited = indexOfEdited === index 
 
 								return (
 									<tr key={ `row-${index}` }>
@@ -79,28 +68,25 @@ export default class CardsTable extends Component {
 												? <form 
 														onSubmit={ event => {
 															event.preventDefault()
-															itemBeingEdited_TitleValue 	= itemBeingEdited_TitleValue.trim()
-															itemBeingEdited_DescValue 	= itemBeingEdited_DescValue.trim()
-															if( itemBeingEdited_TitleValue.length && itemBeingEdited_DescValue.length ){
+															editedItem_Title 	= editedItem_Title.trim()
+															editedItem_Desc 	= editedItem_Desc.trim()
+															if( editedItem_Title.length && editedItem_Desc.length ){
 																onEditCard( 
 																	index, 
 																	{ 
-																		title : itemBeingEdited_TitleValue,
-																		desc  : itemBeingEdited_DescValue
+																		title : editedItem_Title,
+																		desc  : editedItem_Desc
 																	} 
 																)
-																this.setState({ itemIndexBeingEdited : null })
-																// this.props.onItemEdited( index, { title : '', desc : '' } )
-																// props tan gelen onItemEdited fonksiyonunu cagir, 
-																// index i ve title ve desc i gec
+																this.setState({ indexOfEdited : null })
 															} 
 														} }
 													>
 														<input 
 															type="text" 
-															value={ itemBeingEdited_TitleValue } 
+															value={ editedItem_Title } 
 															onChange={ event => this.setState({
-																itemBeingEdited_TitleValue : event.target.value
+																editedItem_Title : event.target.value
 															}) }
 														/>
 													</form>
@@ -113,17 +99,17 @@ export default class CardsTable extends Component {
 												? <form 
 														onSubmit={ event => {
 															event.preventDefault()
-															itemBeingEdited_TitleValue 	= itemBeingEdited_TitleValue.trim()
-															itemBeingEdited_DescValue 	= itemBeingEdited_DescValue.trim()
-															if( itemBeingEdited_TitleValue.length && itemBeingEdited_DescValue.length ){
+															editedItem_Title 	= editedItem_Title.trim()
+															editedItem_Desc 	= editedItem_Desc.trim()
+															if( editedItem_Title.length && editedItem_Desc.length ){
 																onEditCard( 
 																	index, 
 																	{ 
-																		title : itemBeingEdited_TitleValue,
-																		desc  : itemBeingEdited_DescValue
+																		title : editedItem_Title,
+																		desc  : editedItem_Desc
 																	} 
 																)
-																this.setState({ itemIndexBeingEdited : null })
+																this.setState({ indexOfEdited : null })
 																// this.props.onItemEdited( index, { title : '', desc : '' } )
 																// props tan gelen onItemEdited fonksiyonunu cagir, 
 																// index i ve title ve desc i gec
@@ -132,9 +118,9 @@ export default class CardsTable extends Component {
 													>
 														<input 
 															type="text" 
-															value={ itemBeingEdited_DescValue } 
+															value={ editedItem_Desc } 
 															onChange={ event => this.setState({
-																itemBeingEdited_DescValue : event.target.value
+																editedItem_Desc : event.target.value
 															}) }
 														/>
 													</form>
@@ -146,26 +132,23 @@ export default class CardsTable extends Component {
 												className="cta"
 												onClick={ event => {
 													if( isBeingEdited ){
-														itemBeingEdited_TitleValue 	= itemBeingEdited_TitleValue.trim()
-														itemBeingEdited_DescValue 	= itemBeingEdited_DescValue.trim()
-														if( itemBeingEdited_TitleValue.length && itemBeingEdited_DescValue.length ){
+														editedItem_Title 	= editedItem_Title.trim()
+														editedItem_Desc 	= editedItem_Desc.trim()
+														if( editedItem_Title.length && editedItem_Desc.length ){
 															onEditCard( 
 																index, 
 																{ 
-																	title : itemBeingEdited_TitleValue,
-																	desc  : itemBeingEdited_DescValue
+																	title : editedItem_Title,
+																	desc  : editedItem_Desc
 																} 
 															)
-															this.setState({ itemIndexBeingEdited : null })
-															// this.props.onItemEdited( index, { title : '', desc : '' } )
-															// props tan gelen onItemEdited fonksiyonunu cagir, 
-															// index i ve title ve desc i gec
+															this.setState({ indexOfEdited : null })
 														}
 													}else{
 														this.setState({ 
-															itemIndexBeingEdited 				: index,
-															itemBeingEdited_TitleValue 	: card.title,
-															itemBeingEdited_DescValue 	: card.desc
+															indexOfEdited 		: index,
+															editedItem_Title 	: card.title,
+															editedItem_Desc 	: card.desc
 														})
 													}
 												} }
@@ -178,7 +161,7 @@ export default class CardsTable extends Component {
 								    <td className="button-cell">
 								    	<button
 												className="cta"
-												onClick={ () => this.onDeleteClicked( index ) }
+												onClick={ () => onDeleteCard(index) }
 											>
 												Delete
 											</button>

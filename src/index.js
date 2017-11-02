@@ -7,31 +7,28 @@ import  { Router,
           IndexRoute,
           browserHistory,
           applyRouterMiddleware }       from 'react-router'
-import {  useScroll }                   from 'react-router-scroll';
+import {  useScroll }                   from 'react-router-scroll'
 
 // redux related
 import {
   combineReducers,
   createStore,
   applyMiddleware,
-  compose }                             from 'redux';
-import { Provider }                    from 'react-redux'
+  compose }                             from 'redux'
+import { Provider }                     from 'react-redux'
 import {
   syncHistoryWithStore,
   routerReducer }                       from 'react-router-redux'
-import thunk                            from 'redux-thunk';
+import thunk                            from 'redux-thunk'
 
 // main reducers
-import FirstPageReducer                 from './pages/FirstPage/redux';
 import NidaReducer                      from './pages/Nida/redux'
 
 // Wrappers
-import MainWrapper                      from './pages/MainWrapper';
-import FirstPageContent                 from './pages/FirstPage';
-import NidaContent                      from './pages/Nida';
+import MainWrapper                      from './pages/MainWrapper'
+import NidaContent                      from './pages/Nida'
 
 const appReducer = combineReducers({
-    FirstPage : FirstPageReducer,
     Nida      : NidaReducer,
     routing   : routerReducer
   })
@@ -59,8 +56,7 @@ ReactDOM.render((
     <Router history={appHistory} render={applyRouterMiddleware(useScroll())}>
 
       <Route path="/" component={ MainWrapper }>
-        <IndexRoute component={ FirstPageContent }/>
-        <Route path="nida" component={ NidaContent } />
+        <IndexRoute component={ NidaContent }/>
       </Route>
 
     </Router>
